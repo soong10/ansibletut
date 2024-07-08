@@ -1,0 +1,34 @@
+---
+- hosts: linux
+  become: true
+  become_method: sudo 
+  tasks:
+
+    - name: install httpd in alma machine
+      yum:
+        name: httpd
+        state: present
+      when: ansible_distribution == "AlmaLinux"
+
+
+    - name: install apache2 in ubuntu machine
+      apt: 
+       name: apache2
+       state: present
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Starting the service
+      service:
+          name: httpd  
+          state: started 
+      when: ansible_distribution == "AlmaLinux"
+
+    - name: Starting the service
+      service: 
+         name: apache2
+         state: started
+      when: ansible_distribution == "Ubuntu"
+
+
+    
+          
