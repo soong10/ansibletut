@@ -1,0 +1,43 @@
+---
+- hosts: linux
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: updates for Alma Linux machine
+      yum:
+        update_only: yes
+        update_cache: yes
+      when: ansible_distribution == "AlmaLinux" 
+
+
+    - name: updates for ubuntu Linux machine
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+- hosts: ubuntu
+  become: yes
+  become_method: sudo
+  tasks:
+
+    - name: Installing php and apache on Ubuntu
+      apt:
+        name:
+          - apache2
+          - libapache2-mod-php
+        state: latest
+
+- hosts: alma
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Installing php and apache in Alma
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+
+
+
