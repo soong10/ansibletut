@@ -1,0 +1,12 @@
+---
+- hosts: linux
+  tasks:
+    - name: Copying files 
+      tags: copied
+      copy:
+        src: test.txt
+        dest: /tmp/test2.txt
+        owner: root 
+        group: root
+        mode: 0700
+
