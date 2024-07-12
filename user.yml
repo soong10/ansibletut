@@ -1,0 +1,26 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: Adding user account to Linux
+      tags: adduser
+      user:
+        name: sbhandari
+        groups: root
+
+    - name: add ssh keys for sbhandari
+      tags: key
+      authorized_key:
+        user: sbhandari
+        state: present
+        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC8UASRGI6x+e4fsbwjuz74gjF7nJ+pQkZiPKHDPYXa2g2UXh3eWfMJs2g1rE9+514cxdv3rAII+iKtd5LDkKnkrJf22svcP2WQ+eWsrP0B2poMyKaHa5ua/6qiDHBqpOpitu7X5R6+zv6uLSkAtmTFyFgGo1V2x9MOHa2TOW8T8JLL3414qmnr2DPvNke3ql8vvKJkadCYA7FrJjOmxIZJc1SHo65gh63IHVhJXbl5boGtar9/m/7xEOdlGJj6hm7hLEEpaeA1C2jF6Oyzvj5dMkmVoeGFgjA7FvbfFg3X7AeKiRC2uP82efwCglX8J6LWIIhjSCVhtW4Zb2HbBNJ3se4+pb5HvCQOrTtdIQz1LK2KMtle91DbHd46RqEBGsY8YKUWe//UZPs3Onqid3vvXuk+CVAmMJJEha9hqlDG5YjKXQg268D/R1xgwhhc96MA8XESeZs/T1cG0ua/S4lk/PloG3h2IDfalNmTEuMYGA3ktxQGf3VchTuJUonn6ys= ansible@controlnode
+        
+    - name: add sudoers file for sbhandari
+      tags: sudoersd
+      copy:
+        src: sudoer_sbhandari
+        dest: /etc/sudoers.d/
+        owner: root
+        group: root
+        mode: 0440
