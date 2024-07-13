@@ -1,0 +1,56 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks: 
+    - name: Updating the system_caches for ubuntu
+      apt:
+       update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Updating the alma system_cache
+      dnf:
+       update_cache: yes
+      when: ansible_distribution == "AlmaLinux"
+
+- hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - user
+
+- hosts: all
+  become: yes
+  become_method: sudo
+  roles: 
+    - keys
+
+      #- hosts: all
+      # become: yes
+      # become_method: sudo
+      # roles:
+      # - sudo
+
+
+- hosts: ubuntu
+  become: yes
+  become_method: sudo
+  roles: 
+    - apache
+
+- hosts: alma
+  become: yes
+  become_method: sudo
+  roles:
+    - httpd
+
+
+- hosts: localhost
+  become: yes
+  become_method: sudo
+  roles:
+    - samba
+
+    
+
+
