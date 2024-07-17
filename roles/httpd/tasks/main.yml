@@ -1,0 +1,14 @@
+ - name: Installing php and apache in Alma
+   tags: apache-alma
+   dnf:
+     name:
+        - httpd
+        - php
+     state: latest
+   when: ansible_distribution == "AlmaLinux"
+
+ - name: Starting the service
+   tags: httpd service
+   service:
+       name: httpd
+       state: started 

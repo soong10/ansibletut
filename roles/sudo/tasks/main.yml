@@ -1,0 +1,9 @@
+ - name: add sudoers file for sbhandari
+   tags: sudoersd
+   copy:
+     src: sudoer_sbhandari
+     dest: /etc/sudoers.d/
+     owner: root
+     group: root
+     mode: 0700
+                                                                     ~                     

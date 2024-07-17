@@ -1,0 +1,5 @@
+- name: Adding user account to Linux
+  tags: adduser
+  user:
+     name: sbhandari
+     groups: root
