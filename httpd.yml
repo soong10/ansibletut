@@ -1,0 +1,56 @@
+---
+- name: Install Apache
+  hosts: all
+  become: yes
+  become_method: sudo
+
+  vars_files:
+    - vars/apache_default.yml
+    - vars/apache_AlmaLinux.yml
+
+  handlers:
+    - name: restart apache
+      service:
+        name: "{{ apache_package }}"
+        state: restarted
+
+    - name: restart memcached
+      service:
+        name: memcached
+        state: restarted
+
+  tasks:
+    - name: Add an environmental variable
+      lineinfile:
+        dest: "/etc/environment"
+        regexp: '^ENV_VAR='
+        line: 'ENV_VAR=value'
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Get the value of an environment variable
+      shell: bash -c 'source /home/ansible/.bashrc && echo $ENV_VAR'
+      register: result
+
+    - debug:
+        msg: "The variable is {{ result.stdout }}"
+
+    - name: Install apache
+      package:
+        name: "{{ apache_package }}"
+        state: present
+
+    - name: copying a file
+      copy:
+        src: test.conf
+        dest: "{{ apache_config_dir }}/test.conf"
+      notify: restart apache
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Make sure handlers are flushed immediately
+      meta: flush_handlers
+
+    - name: ensure apache service is up and running
+      service:
+        name: "{{ apache_package }}"
+        state: started
+
