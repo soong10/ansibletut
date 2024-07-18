@@ -1,0 +1,12 @@
+---
+- name: Using the import module
+  hosts: all
+  become: yes
+  become_method: sudo 
+  tasks:
+    - import_tasks: roles/apache/tasks/main.yml
+    - import_tasks: roles/httpd/tasks/main.yml
+    - import_tasks: roles/samba/tasks/main.yml
+    - import_tasks: roles/user/tasks/main.yml
+
+
